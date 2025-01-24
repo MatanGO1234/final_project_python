@@ -1,0 +1,8 @@
+numpy
+matplotlib
+scipy
+statsmodels
+ipywidgets
+ipympl
+pytest
+jupyter
