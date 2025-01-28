@@ -29,41 +29,41 @@ def calculate_spike_characteristics(
     buffer_size = 50
 
     for spike_idx in spikes_indices:
-        # הגדרת חלון החיפוש
+        # Define search window: 50 sampels before and after each spike
         start_spike = max(0, spike_idx - buffer_size)
         end_spike = min(len(signal), spike_idx + buffer_size)
 
-        # מציאת גבולות הספייק
+        # sortings spikes to positive and negetive
         if mode == "positive":
-            # חיפוש לאחור עד שהערך יורד מתחת לסף
+            # backward search until finding value below threshold
             while start_spike > 0 and signal[start_spike] > positive_fdr:
                 start_spike -= 1
-            # חיפוש קדימה עד שהערך יורד מתחת לסף
+            # foorwad search untill finding spike below threshold
             while end_spike < len(signal) and signal[end_spike] > positive_fdr:
                 end_spike += 1
-        else:
+        else: # mode == negetive
+            # same, but with negetive threshold
             while start_spike > 0 and signal[start_spike] < negative_fdr:
                 start_spike -= 1
             while end_spike < len(signal) and signal[end_spike] < negative_fdr:
                 end_spike += 1
 
         if start_spike >= end_spike:
-            continue
+            continue # if something go wrong, skip the spike
 
-        # שימוש באינדקס המקורי של הספייק במקום חיפוש חדש
-        local_peak_spike = spike_idx
+        
 
         spike_characteristics.append(
             {
-                "peak_index": local_peak_spike,
-                "peak": signal[local_peak_spike],
-                "duration": end_spike - start_spike,
-                "start_index": start_spike,
-                "end_index": end_spike,
+                "peak_index": spike_idx,  # peak location
+                "peak": signal[spike_idx],  # peak value
+                "duration": end_spike - start_spike,  # duration of the spike
+                "start_index": start_spike,  # starting point
+                "end_index": end_spike,  # ending point
             }
         )
 
-    # סינון כפילויות
+    # Filtering false indetification
     return filter_unique_spikes(spike_characteristics)
 
 

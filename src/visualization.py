@@ -8,11 +8,11 @@ def plot_signal_with_spikes(
     positive_fdr,
     negative_fdr,
 ):
-    def plot(x_range):
+    def plot(x_range): # getting range to present
         x_min, x_max = x_range
         plt.figure(figsize=(12, 6))
         plt.plot(filtered_signal, color="lightblue", label="Filtered Signal")
-
+        # adding line to positive threshold only if it is exist
         if not np.isnan(positive_fdr):
             plt.axhline(
                 positive_fdr,
@@ -20,6 +20,7 @@ def plot_signal_with_spikes(
                 linestyle="--",
                 label="Positive FDR Threshold",
             )
+            # same for negetive
         if not np.isnan(negative_fdr):
             plt.axhline(
                 negative_fdr,
@@ -28,7 +29,7 @@ def plot_signal_with_spikes(
                 label="Negative FDR Threshold",
             )
 
-        # Positive spikes
+        # Positive spikes- red dots
         plt.scatter(
             [spike["peak_index"] for spike in unique_positive_spikes],
             [spike["peak"] for spike in unique_positive_spikes],
@@ -38,7 +39,7 @@ def plot_signal_with_spikes(
             else "",
         )
 
-        # Negative spikes
+        # Negetive spikes--blue dots
         plt.scatter(
             [spike["peak_index"] for spike in unique_negative_spikes],
             [spike["peak"] for spike in unique_negative_spikes],
@@ -48,7 +49,7 @@ def plot_signal_with_spikes(
             else "",
         )
 
-        plt.xlim(0, len(filtered_signal))
+        plt.xlim(0, len(filtered_signal)) # range X axis
         plt.title("Interactive Signal with Detected Spikes")
         plt.xlabel("Sample Index")
         plt.ylabel("Amplitude (µV)")
@@ -58,12 +59,12 @@ def plot_signal_with_spikes(
         plt.show()
 
     x_slider = IntRangeSlider(
-        value=[0, len(filtered_signal)],
-        min=0,
-        max=len(filtered_signal),
-        step=100,
+        value=[0, len(filtered_signal)],  # satrt value--all range
+        min=0,  # minimum
+        max=len(filtered_signal),  # maximum
+        step=100,  # jumpig of 100 sampels
         description="X Range:",
-        continuous_update=False,
+        continuous_update=False,  # prevent seqence update
     )
 
     interact(plot, x_range=x_slider)

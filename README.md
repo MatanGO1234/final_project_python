@@ -26,6 +26,13 @@ jupyter nbextension enable --py widgetsnbextension
 3. Run the main script:
    python main.py
 
+### Data Distribution Analysis
+
+The distribution of signal values was analyzed to validate the assumption of normality, which supports the use of the FDR test. To visualize the distribution of your signal values, run the following script:
+
+```bash
+python plot_distribution.py
+
 ## Interactive Plotting
 When using Jupyter Notebook, enable interactive plotting by running the following command inside a notebook cell:
 
